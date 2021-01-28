@@ -14,5 +14,7 @@ public class MyConstants {
     public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
     /** 请求地址 */
     public static String gongan_url = "https://172.31.35.20:99/";
+    //
+    public final static String AUTHORIZATION = "YXH";
 
 }

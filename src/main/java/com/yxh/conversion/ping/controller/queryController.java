@@ -1,7 +1,11 @@
 package com.yxh.conversion.ping.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.yxh.conversion.tools.MyMsg;
 import com.yxh.conversion.tools.MyUtils;
+import com.yxh.conversion.tools.TransactionCode;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,7 +25,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "系统查询服务")
 @Controller
 @RequestMapping("/api")
-public class PingController {
+public class queryController {
 
     /**
      * 获取服务器启动时间
@@ -30,11 +34,10 @@ public class PingController {
     @ResponseBody
     @RequestMapping(value = "/queryServerStartDate",produces = { "application/json;charset=UTF-8" },method = RequestMethod.GET)
     public String queryServerStartDate() throws Exception {
-        JSONObject body = new JSONObject();
-        String msg = "queryServerStartDate " + MyUtils.getServerStartDate().toString();
-        body.put("code", "000000");
-        body.put("msg", msg);
-        return body.toJSONString();
+        JSONObject dataset = new JSONObject();
+        dataset.put("msg", "queryServerStartDate " + MyUtils.getServerStartDate().toString());
+
+        return MyMsg.reqSuccessMsg(dataset);
     }
 
     /**
@@ -44,11 +47,8 @@ public class PingController {
     @ResponseBody
     @RequestMapping(value = "/ping",produces = { "application/json;charset=UTF-8" },method = RequestMethod.GET)
     public String ping() throws Exception {
-        JSONObject body = new JSONObject();
-        String msg = "Successful";
-        body.put("code", "000000");
-        body.put("msg", msg);
-        return body.toJSONString();
+
+        return MyMsg.reqSuccessMsg(null);
     }
     
 }

@@ -10,44 +10,42 @@ import java.security.SecureRandom;
  * @datetime
  */
 public class MD5Util {
+	/**
+     * <p>MD5加码 生成32位md5码</p>
+     * @param String
+     * @return String 
+    */
+    public static String getMD5(String str) {
+        String get_md5 = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] md5 = md.digest(str.getBytes());
+            StringBuffer sb = new StringBuffer();
+            String part = null;
+            for (int i = 0; i < md5.length; i++) {
+                part = Integer.toHexString(md5[i] & 0xFF);
+                if (part.length() == 1) {
+                    part = "" + part;
+                }
+                sb.append(part);
+            }
+            get_md5 = (sb).toString();
+            } catch (Exception ex) {
+                System.out.println("ERROR " + ex);
+				ex.printStackTrace();
+            }
+            return get_md5;
+    }
 
-	/***
-	 * MD5加码 生成32位md5码
+	/**
+	 * 
+	 * 加密用户密码
+	 * @param userid
+	 * @param pwd
+	 * @return
 	 */
-	public static String string2MD5(String inStr) {
-		MessageDigest md5 = null;
-		try {
-			md5 = MessageDigest.getInstance("MD5");
-		} catch (Exception e) {
-			System.out.println(e.toString());
-			e.printStackTrace();
-			return "";
-		}
-		char[] charArray = inStr.toCharArray();
-		byte[] byteArray = new byte[charArray.length];
-
-		for (int i = 0; i < charArray.length; i++)
-			byteArray[i] = (byte) charArray[i];
-		byte[] md5Bytes = md5.digest(byteArray);
-		StringBuffer hexValue = new StringBuffer();
-		for (int i = 0; i < md5Bytes.length; i++) {
-			int val = ((int) md5Bytes[i]) & 0xff;
-			if (val < 16)
-				hexValue.append("0");
-			hexValue.append(Integer.toHexString(val));
-		}
-		return hexValue.toString();
-
-	}
-/**
- * 
- * 加密用户密码
- * @param userid
- * @param pwd
- * @return
- */
 	public static String encryUserPwd(String userid, String pwd) {
-		return string2MD5(userid + pwd);
+		return getMD5(userid + pwd);
 	}
 
 	// 测试主函数
@@ -57,7 +55,7 @@ public class MD5Util {
 		SecureRandom random = new SecureRandom();
 		byte[] bytes = new byte[4];
 		random.nextBytes(bytes);
-		System.out.println(string2MD5("lklfwdslkf"));
+		System.out.println(getMD5("lklfwdslkf"));
 
 	}
 }
