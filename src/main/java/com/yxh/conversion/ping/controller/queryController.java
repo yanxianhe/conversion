@@ -47,7 +47,7 @@ public class queryController {
     @ResponseBody
     @RequestMapping(value = "/ping",produces = { "application/json;charset=UTF-8" },method = RequestMethod.GET)
     public String ping() throws Exception {
-
+        
         return MyMsg.reqSuccessMsg(null);
     }
     
