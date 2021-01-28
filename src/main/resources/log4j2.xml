@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，
+ 你会看到log4j2内部各种详细输出。可以设置成OFF(关闭)或Error(只输出错误信息)
+ 日志级别以及优先级排序:
+ OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
+-->
+<Configuration status="WARN" monitorInterval="5">
+    <!-- 变量配置 -->
+    <Properties>
+        <Property name="App" value="conversion"></Property>
+        <Property name="logDir" value="logs"></Property>
+        <Property name="splitSize" value="300MB"></Property>
+        <Property name="layoutPattern" value= "%d{yyyy-MM-dd 'at' HH:mm:ss z} [%t] %-5level %logger{36} %L %M - %msg%xEx%n"></Property>
+    </Properties>
+ 
+    <Appenders>
+        <!-- 控制台 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${layoutPattern}" disableAnsi="false" noConsoleNoAnsi="false"/>
+        </Console>
+ 
+        <!-- 打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+        <!-- RollingRandomAccessFile 默认日志文件写入策略为异步刷盘 RollingFile -->
+        <RollingRandomAccessFile name="RollingRandomAccessFile" fileName="${logDir}/${App}-info.log" immediateFlush="true" filePattern="${logDir}/$${date:yyyy-MM}/${App}-info-%d{yyyy-MM-dd}-%i.log.gz" append="true">
+            <PatternLayout pattern="${layoutPattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="${splitSize}"/>
+            </Policies>
+            <!-- 指定每天的最大压缩包个数,超过了会覆盖之前的 -->
+            <DefaultRolloverStrategy max="12"/>
+        </RollingRandomAccessFile>
+    </Appenders>
+    <Loggers>
+        <!--过滤掉spring和mybatis的一些无用的DEBUG信息-->
+        <logger name="org.mybatis" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </logger>
+        <logger name="org.springframework" level="info" additivity="true">
+            <AppenderRef ref="Console"/>
+        </logger>
+        <logger name="com.yxh.conversion" level="info" additivity="true">
+            <AppenderRef ref="Console"/>
+        </logger>
+        <!-- root logger 配置,全局配置，默认所有的Logger都继承此配置 -->
+        <!-- AsyncRoot - 异步记录日志 - 需要LMAX Disruptor的支持 -->
+        <Root includeLocation="true" additivity="true">
+            <AppenderRef ref="RollingRandomAccessFile"/>
+        </Root>
+    </Loggers>
+</Configuration>
