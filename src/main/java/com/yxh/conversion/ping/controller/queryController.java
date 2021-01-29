@@ -47,6 +47,22 @@ public class queryController {
     }
 
     /**
+     * 获取服务器DB时间
+     */
+    @ApiOperation(value = "获取服务器启动时间")
+    @ResponseBody
+    @RequestMapping(value = "/queryDBDate", produces = {"application/json;charset=UTF-8" }, method = RequestMethod.GET)
+    public String queryDBDate() throws Exception {
+        JSONObject dataset = new JSONObject();
+        // 连接数据库获取数据时间
+        // db_date = 
+        // dataset.put("msg", "queryServerStartDate " + db_date);
+        dataset.put("retAddr", request.getRemoteAddr());
+        dataset.put("retUser",request.getRemoteUser());
+        return MyMsg.reqSuccessMsg(dataset);
+    }
+
+    /**
      * ping
      */
     @ApiOperation(value = "服务探针")

@@ -2,6 +2,8 @@ package com.yxh.conversion.tools;
 
 public class MyConstants {
 
+    /** IDEAKey */
+    public static final String SYS_IDEA_KEY = "xianhe_yan";
     /** 系统名称 */
     public static final String SYS_NAME = "conversion";
     /** 编号记录文件名 */
